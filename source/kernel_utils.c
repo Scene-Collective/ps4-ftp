@@ -34,52 +34,64 @@ int kpayload_get_fw_version(struct thread *td, struct kpayload_get_fw_version_ar
   uint64_t fw_version = 0x666;
 
   if (!memcmp((char *)(&((uint8_t *)__readmsr(0xC0000082))[-K670_XFAST_SYSCALL]), (char[4]){0x7F, 0x45, 0x4C, 0x46}, 4)) {
-    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K672_XFAST_SYSCALL];
+    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K670_XFAST_SYSCALL];
     if (!memcmp((char *)(kernel_base + K670_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
-      fw_version = 0x670;
+      fw_version = 0x670; // 6.70, 6.71, and 6.72
       copyout = (void *)(kernel_base + K670_COPYOUT);
     } else if (!memcmp((char *)(kernel_base + K620_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
-      fw_version = 0x620;
+      fw_version = 0x620; // 6.20
       copyout = (void *)(kernel_base + K620_COPYOUT);
     } else if (!memcmp((char *)(kernel_base + K600_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
-      fw_version = 0x600;
+      fw_version = 0x600; // 6.00 and 6.02
       copyout = (void *)(kernel_base + K600_COPYOUT);
     } else if (!memcmp((char *)(kernel_base + K555_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
-      fw_version = 0x555;
+      fw_version = 0x555; // 5.55 and 5.56
       copyout = (void *)(kernel_base + K555_COPYOUT);
     }  else if (!memcmp((char *)(kernel_base + K553_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
-      fw_version = 0x553;
+      fw_version = 0x553; // 5.53
       copyout = (void *)(kernel_base + K553_COPYOUT);
     } else if (!memcmp((char *)(kernel_base + K550_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
-      fw_version = 0x550;
+      fw_version = 0x550; // 5.50
       copyout = (void *)(kernel_base + K550_COPYOUT);
     } else if (!memcmp((char *)(kernel_base + K505_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
-      fw_version = 0x505;
+      fw_version = 0x505; // 5.05 and 5.07
       copyout = (void *)(kernel_base + K505_COPYOUT);
     } else if (!memcmp((char *)(kernel_base + K503_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
-      fw_version = 0x503;
+      fw_version = 0x503; // 5.03
       copyout = (void *)(kernel_base + K503_COPYOUT);
     } else if (!memcmp((char *)(kernel_base + K500_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
-      fw_version = 0x500;
+      fw_version = 0x500; // 5.00 and 5.01
       copyout = (void *)(kernel_base + K500_COPYOUT);
     }
-  } else if (!memcmp((char *)(&((uint8_t *)__readmsr(0xC0000082))[-K474_XFAST_SYSCALL]), (char[4]){0x7F, 0x45, 0x4C, 0x46}, 4)) {
-    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K474_XFAST_SYSCALL];
-    if (!memcmp((char *)(kernel_base + K474_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
-      fw_version = 0x474;
-      copyout = (void *)(kernel_base + K474_COPYOUT);
+  } else if (!memcmp((char *)(&((uint8_t *)__readmsr(0xC0000082))[-K470_XFAST_SYSCALL]), (char[4]){0x7F, 0x45, 0x4C, 0x46}, 4)) {
+    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K470_XFAST_SYSCALL];
+    if (!memcmp((char *)(kernel_base + K470_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
+      fw_version = 0x470; // 4.70
+      copyout = (void *)(kernel_base + K470_COPYOUT);
     }
-  } else if (!memcmp((char *)(&((uint8_t *)__readmsr(0xC0000082))[-K455_XFAST_SYSCALL]), (char[4]){0x7F, 0x45, 0x4C, 0x46}, 4)) {
-    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K455_XFAST_SYSCALL];
-    if (!memcmp((char *)(kernel_base + K455_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
-      fw_version = 0x455;
-      copyout = (void *)(kernel_base + K455_COPYOUT);
+  } else if (!memcmp((char *)(&((uint8_t *)__readmsr(0xC0000082))[-K471_XFAST_SYSCALL]), (char[4]){0x7F, 0x45, 0x4C, 0x46}, 4)) {
+    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K471_XFAST_SYSCALL];
+    if (!memcmp((char *)(kernel_base + K471_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
+      fw_version = 0x471; // 4.71, 4.72, 4.73, and 4.74
+      copyout = (void *)(kernel_base + K471_COPYOUT);
+    }
+  } else if (!memcmp((char *)(&((uint8_t *)__readmsr(0xC0000082))[-K450_XFAST_SYSCALL]), (char[4]){0x7F, 0x45, 0x4C, 0x46}, 4)) {
+    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K450_XFAST_SYSCALL];
+    if (!memcmp((char *)(kernel_base + K450_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
+      fw_version = 0x450; // 4.50 and 4.55
+      copyout = (void *)(kernel_base + K450_COPYOUT);
     }
   } else if (!memcmp((char *)(&((uint8_t *)__readmsr(0xC0000082))[-K405_XFAST_SYSCALL]), (char[4]){0x7F, 0x45, 0x4C, 0x46}, 4)) {
     kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K405_XFAST_SYSCALL];
     if (!memcmp((char *)(kernel_base + K405_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
-      fw_version = 0x405;
+      fw_version = 0x405; // 4.05
       copyout = (void *)(kernel_base + K405_COPYOUT);
+    }
+  }  else if (!memcmp((char *)(&((uint8_t *)__readmsr(0xC0000082))[-K400_XFAST_SYSCALL]), (char[4]){0x7F, 0x45, 0x4C, 0x46}, 4)) {
+    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K400_XFAST_SYSCALL];
+    if (!memcmp((char *)(kernel_base + K400_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
+      fw_version = 0x400; // 4.00 and 4.01
+      copyout = (void *)(kernel_base + K400_COPYOUT);
     }
   } else {
     return -1;
@@ -110,7 +122,18 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args) 
 
   uint64_t fw_version = args->kpayload_jailbreak_info->fw_version;
 
-  if (fw_version == 0x405) {
+  if (fw_version == 0x400) {
+    // 4.00 and 4.01
+    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K400_XFAST_SYSCALL];
+    kernel_ptr = (uint8_t *)kernel_base;
+    got_prison0 = (void **)&kernel_ptr[K400_PRISON_0];
+    got_rootvnode = (void **)&kernel_ptr[K400_ROOTVNODE];
+
+    mmap_patch_1 = &kernel_ptr[K400_MMAP_SELF_1];
+    mmap_patch_2 = &kernel_ptr[K400_MMAP_SELF_2];
+    mmap_patch_3 = &kernel_ptr[K400_MMAP_SELF_3];
+  } else if (fw_version == 0x405) {
+    // 4.05
     kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K405_XFAST_SYSCALL];
     kernel_ptr = (uint8_t *)kernel_base;
     got_prison0 = (void **)&kernel_ptr[K405_PRISON_0];
@@ -119,25 +142,38 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args) 
     mmap_patch_1 = &kernel_ptr[K405_MMAP_SELF_1];
     mmap_patch_2 = &kernel_ptr[K405_MMAP_SELF_2];
     mmap_patch_3 = &kernel_ptr[K405_MMAP_SELF_3];
-  } else if (fw_version == 0x455) {
-    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K455_XFAST_SYSCALL];
+  } else if (fw_version == 0x450) {
+    // 4.50 and 4.55
+    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K450_XFAST_SYSCALL];
     kernel_ptr = (uint8_t *)kernel_base;
-    got_prison0 = (void **)&kernel_ptr[K455_PRISON_0];
-    got_rootvnode = (void **)&kernel_ptr[K455_ROOTVNODE];
+    got_prison0 = (void **)&kernel_ptr[K450_PRISON_0];
+    got_rootvnode = (void **)&kernel_ptr[K450_ROOTVNODE];
 
-    mmap_patch_1 = &kernel_ptr[K455_MMAP_SELF_1];
-    mmap_patch_2 = &kernel_ptr[K455_MMAP_SELF_2];
-    mmap_patch_3 = &kernel_ptr[K455_MMAP_SELF_3];
-  } else if (fw_version == 0x474) {
-    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K474_XFAST_SYSCALL];
+    mmap_patch_1 = &kernel_ptr[K450_MMAP_SELF_1];
+    mmap_patch_2 = &kernel_ptr[K450_MMAP_SELF_2];
+    mmap_patch_3 = &kernel_ptr[K450_MMAP_SELF_3];
+  } else if (fw_version == 0x470) {
+    // 4.70
+    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K470_XFAST_SYSCALL];
     kernel_ptr = (uint8_t *)kernel_base;
-    got_prison0 = (void **)&kernel_ptr[K474_PRISON_0];
-    got_rootvnode = (void **)&kernel_ptr[K474_ROOTVNODE];
+    got_prison0 = (void **)&kernel_ptr[K470_PRISON_0];
+    got_rootvnode = (void **)&kernel_ptr[K470_ROOTVNODE];
 
-    mmap_patch_1 = &kernel_ptr[K474_MMAP_SELF_1];
-    mmap_patch_2 = &kernel_ptr[K474_MMAP_SELF_2];
-    mmap_patch_3 = &kernel_ptr[K474_MMAP_SELF_3];
+    mmap_patch_1 = &kernel_ptr[K470_MMAP_SELF_1];
+    mmap_patch_2 = &kernel_ptr[K470_MMAP_SELF_2];
+    mmap_patch_3 = &kernel_ptr[K470_MMAP_SELF_3];
+  } else if (fw_version == 0x471) {
+    // 4.71, 4.72, 4.73, and 4.74
+    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K471_XFAST_SYSCALL];
+    kernel_ptr = (uint8_t *)kernel_base;
+    got_prison0 = (void **)&kernel_ptr[K471_PRISON_0];
+    got_rootvnode = (void **)&kernel_ptr[K471_ROOTVNODE];
+
+    mmap_patch_1 = &kernel_ptr[K471_MMAP_SELF_1];
+    mmap_patch_2 = &kernel_ptr[K471_MMAP_SELF_2];
+    mmap_patch_3 = &kernel_ptr[K471_MMAP_SELF_3];
   } else if (fw_version == 0x500) {
+    // 5.00 and 5.01
     kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K501_XFAST_SYSCALL];
     kernel_ptr = (uint8_t *)kernel_base;
     got_prison0 = (void **)&kernel_ptr[K500_PRISON_0];
@@ -147,6 +183,7 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args) 
     mmap_patch_2 = &kernel_ptr[K500_MMAP_SELF_2];
     mmap_patch_3 = &kernel_ptr[K500_MMAP_SELF_3];
   } else if (fw_version == 0x503) {
+    // 5.03
     kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K503_XFAST_SYSCALL];
     kernel_ptr = (uint8_t *)kernel_base;
     got_prison0 = (void **)&kernel_ptr[K503_PRISON_0];
@@ -156,6 +193,7 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args) 
     mmap_patch_2 = &kernel_ptr[K503_MMAP_SELF_2];
     mmap_patch_3 = &kernel_ptr[K503_MMAP_SELF_3];
   } else if (fw_version == 0x505) {
+    // 5.05 and 5.07
     kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K505_XFAST_SYSCALL];
     kernel_ptr = (uint8_t *)kernel_base;
     got_prison0 = (void **)&kernel_ptr[K505_PRISON_0];
@@ -165,6 +203,7 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args) 
     mmap_patch_2 = &kernel_ptr[K505_MMAP_SELF_2];
     mmap_patch_3 = &kernel_ptr[K505_MMAP_SELF_3];
   } else if (fw_version == 0x550) {
+    // 5.50
     kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K550_XFAST_SYSCALL];
     kernel_ptr = (uint8_t *)kernel_base;
     got_prison0 = (void **)&kernel_ptr[K550_PRISON_0];
@@ -174,6 +213,7 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args) 
     mmap_patch_2 = &kernel_ptr[K550_MMAP_SELF_2];
     mmap_patch_3 = &kernel_ptr[K550_MMAP_SELF_3];
   } else if (fw_version == 0x553) {
+    // 5.53
     kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K553_XFAST_SYSCALL];
     kernel_ptr = (uint8_t *)kernel_base;
     got_prison0 = (void **)&kernel_ptr[K553_PRISON_0];
@@ -183,6 +223,7 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args) 
     mmap_patch_2 = &kernel_ptr[K553_MMAP_SELF_2];
     mmap_patch_3 = &kernel_ptr[K553_MMAP_SELF_3];
   } else if (fw_version == 0x555) {
+    // 5.55 and 5.56
     kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K555_XFAST_SYSCALL];
     kernel_ptr = (uint8_t *)kernel_base;
     got_prison0 = (void **)&kernel_ptr[K555_PRISON_0];
@@ -192,6 +233,7 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args) 
     mmap_patch_2 = &kernel_ptr[K555_MMAP_SELF_2];
     mmap_patch_3 = &kernel_ptr[K555_MMAP_SELF_3];
   } else if (fw_version == 0x600) {
+    // 6.00 and 6.02
     kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K600_XFAST_SYSCALL];
     kernel_ptr = (uint8_t *)kernel_base;
     got_prison0 = (void **)&kernel_ptr[K600_PRISON_0];
@@ -201,6 +243,7 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args) 
     mmap_patch_2 = &kernel_ptr[K600_MMAP_SELF_2];
     mmap_patch_3 = &kernel_ptr[K600_MMAP_SELF_3];
   } else if (fw_version == 0x620) {
+    // 6.20
     kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K620_XFAST_SYSCALL];
     kernel_ptr = (uint8_t *)kernel_base;
     got_prison0 = (void **)&kernel_ptr[K620_PRISON_0];
@@ -210,6 +253,7 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args) 
     mmap_patch_2 = &kernel_ptr[K620_MMAP_SELF_2];
     mmap_patch_3 = &kernel_ptr[K620_MMAP_SELF_3];
   } else if (fw_version == 0x670) {
+    // 6.70, 6.71, and 6.72
     kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K670_XFAST_SYSCALL];
     kernel_ptr = (uint8_t *)kernel_base;
     got_prison0 = (void **)&kernel_ptr[K670_PRISON_0];
