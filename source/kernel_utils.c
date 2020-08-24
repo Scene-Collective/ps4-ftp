@@ -33,9 +33,12 @@ int kpayload_get_fw_version(struct thread *td, struct kpayload_get_fw_version_ar
 
   uint64_t fw_version = 0x666;
 
-  if (!memcmp((char *)(&((uint8_t *)__readmsr(0xC0000082))[-K670_XFAST_SYSCALL]), (char[4]){0x7F, 0x45, 0x4C, 0x46}, 4)) {
-    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K670_XFAST_SYSCALL];
-    if (!memcmp((char *)(kernel_base + K670_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
+  if (!memcmp((char *)(&((uint8_t *)__readmsr(0xC0000082))[-K700_XFAST_SYSCALL]), (char[4]){0x7F, 0x45, 0x4C, 0x46}, 4)) {
+    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K700_XFAST_SYSCALL];
+    if (!memcmp((char *)(kernel_base + K700_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
+      fw_version = 0x700; // 7.00
+      copyout = (void *)(kernel_base + K700_COPYOUT);
+    } else if (!memcmp((char *)(kernel_base + K670_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
       fw_version = 0x670; // 6.70, 6.71, and 6.72
       copyout = (void *)(kernel_base + K670_COPYOUT);
     } else if (!memcmp((char *)(kernel_base + K620_PRINTF), (char[12]){0x55, 0x48, 0x89, 0xE5, 0x53, 0x48, 0x83, 0xEC, 0x58, 0x48, 0x8D, 0x1D}, 12)) {
@@ -337,6 +340,16 @@ int kpayload_jailbreak(struct thread *td, struct kpayload_jailbreak_args *args) 
     mmap_patch_1 = &kernel_ptr[K670_MMAP_SELF_1];
     mmap_patch_2 = &kernel_ptr[K670_MMAP_SELF_2];
     mmap_patch_3 = &kernel_ptr[K670_MMAP_SELF_3];
+  } else if (fw_version == 0x700) {
+    // 7.00
+    kernel_base = &((uint8_t *)__readmsr(0xC0000082))[-K700_XFAST_SYSCALL];
+    kernel_ptr = (uint8_t *)kernel_base;
+    got_prison0 = (void **)&kernel_ptr[K700_PRISON_0];
+    got_rootvnode = (void **)&kernel_ptr[K700_ROOTVNODE];
+
+    mmap_patch_1 = &kernel_ptr[K700_MMAP_SELF_1];
+    mmap_patch_2 = &kernel_ptr[K700_MMAP_SELF_2];
+    mmap_patch_3 = &kernel_ptr[K700_MMAP_SELF_3];
   } else {
     return -1;
   }
