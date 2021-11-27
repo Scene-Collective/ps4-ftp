@@ -422,6 +422,10 @@ static void send_file(ftps4_client_info_t *client, const char *path) {
 
     unsigned int bytes_read;
     while ((bytes_read = read(fd, buffer, file_buf_size)) > 0) {
+      if (sce_net_errno) {
+        sce_net_errno = 0;
+        break; // Error, so skip reading/sending any more
+      }
       client_send_data_raw(client, buffer, bytes_read);
     }
 

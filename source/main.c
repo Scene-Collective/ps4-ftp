@@ -11,6 +11,18 @@
 int run;
 int decrypt;
 
+void random_string(char *str, int num_of_chars) {
+  srand(time(NULL));
+  const char valid_chars[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+  int num_valid = sizeof(valid_chars) - 1;
+  for(int i = 0; i < num_of_chars; i++) {
+    int c = rand() % num_valid ;
+    str[i] = valid_chars[c];
+  }
+  str[num_of_chars] = '\0';
+}
+
 void custom_MTPROC(ftps4_client_info_t *client) {
   int result = mkdir("/mnt/proc", 0777);
   if (result >= 0 || (*__error()) == 17) {
@@ -71,9 +83,19 @@ static void custom_RETR(ftps4_client_info_t *client) {
   char dest_path[PATH_MAX] = {0};
   ftps4_gen_ftp_fullpath(client, dest_path, sizeof(dest_path));
   if (is_self(dest_path) && decrypt) {
-    decrypt_and_dump_self(dest_path, "/user/temp.self");
-    ftps4_send_file(client, "/user/temp.self");
-    unlink("/user/temp.self");
+    char random[11];
+    char file_path[17 + sizeof(random)];
+    random_string(random, sizeof(random - 1));
+    snprintf_s(file_path, sizeof(file_path), "/user/temp/%s.self", random);
+
+    while(file_exists(file_path)) {
+      random_string(random, sizeof(random - 1));
+      snprintf_s(file_path, sizeof(file_path), "/user/temp/%s.self", random);
+    }
+
+    decrypt_and_dump_self(dest_path, file_path);
+    ftps4_send_file(client, file_path);
+    unlink(file_path);
   } else {
     ftps4_send_file(client, dest_path);
   }
