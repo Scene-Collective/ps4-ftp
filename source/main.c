@@ -12,7 +12,6 @@ int run;
 int decrypt;
 
 void random_string(char *str, int num_of_chars) {
-  srand(time(NULL));
   const char valid_chars[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
   int num_valid = sizeof(valid_chars) - 1;
