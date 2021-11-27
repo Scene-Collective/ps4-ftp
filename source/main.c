@@ -84,11 +84,11 @@ static void custom_RETR(ftps4_client_info_t *client) {
   if (is_self(dest_path) && decrypt) {
     char random[11];
     char file_path[17 + sizeof(random)];
-    random_string(random, sizeof(random - 1));
+    random_string(random, sizeof(random) - 1);
     snprintf_s(file_path, sizeof(file_path), "/user/temp/%s.self", random);
 
     while(file_exists(file_path)) {
-      random_string(random, sizeof(random - 1));
+      random_string(random, sizeof(random) - 1);
       snprintf_s(file_path, sizeof(file_path), "/user/temp/%s.self", random);
     }
 
