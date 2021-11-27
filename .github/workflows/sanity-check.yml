@@ -22,7 +22,7 @@ jobs:
         run: |
           git clone https://github.com/Scene-Collective/ps4-payload-sdk ~/ps4-payload-sdk && cd "$_"
           chmod +x install.sh
-          ./install.sh
+          sudo ./install.sh
       -
         name: "Build Payload"
         run: |
