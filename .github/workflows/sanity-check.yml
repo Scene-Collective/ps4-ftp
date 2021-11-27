@@ -26,7 +26,7 @@ jobs:
       -
         name: "Build Payload"
         run: |
-          export PS4SDK="$(echo $HOME)/PS4SDK"
+          export PS4SDK=/opt/ps4sdk
           make
       -
         name: "Upload Binary Artifact"
