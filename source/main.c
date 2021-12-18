@@ -15,8 +15,8 @@ void random_string(char *str, int num_of_chars) {
   const char valid_chars[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
   int num_valid = sizeof(valid_chars) - 1;
-  for(int i = 0; i < num_of_chars; i++) {
-    int c = rand() % num_valid ;
+  for (int i = 0; i < num_of_chars; i++) {
+    int c = rand() % num_valid;
     str[i] = valid_chars[c];
   }
   str[num_of_chars] = '\0';
@@ -87,7 +87,7 @@ static void custom_RETR(ftps4_client_info_t *client) {
     random_string(random, sizeof(random) - 1);
     snprintf_s(file_path, sizeof(file_path), "/user/temp/%s.self", random);
 
-    while(file_exists(file_path)) {
+    while (file_exists(file_path)) {
       random_string(random, sizeof(random) - 1);
       snprintf_s(file_path, sizeof(file_path), "/user/temp/%s.self", random);
     }
